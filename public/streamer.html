@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .content {
+            position: fixed;
+            bottom: 0;
+            color: #f1f1f1;
+            width: 100%;
+            padding: 20px;
+        }
+        .wrapper {
+            text-align: center;
+        }
+        #open-broadcast {
+            position: absolute;
+            top: 50%;
+        }
+        #stop-broadcast-image{
+            border-radius: 50%;
+            transform: rotate(120deg);
+            height:50px;
+            width: 50px;
+        }
+        #stop-broadcast{
+            background-color: Transparent;
+            background-repeat:no-repeat;
+            border: none;
+            cursor:pointer;
+            overflow: hidden;
+            outline:none;
+            position: absolute;
+            bottom: 30%;
+            left: 40%;
+            display: none;
+        }
+        video{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+        }
+        #streamer-video-div{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <button id="open-broadcast">OPEN BROADCAST</button>
+</div>
+<div id="streamer-video-div" >
+<video id="streamer-video-preview" autoplay></video>
+    <div class="content">
+        <button id="switch-camera-button">switch camera</button>
+    </div>
+</div>
+
+<!--<div class="content">-->
+<!--    <button id="stop-broadcast"><img id = "stop-broadcast-image" src="assets/endCall.png"/></button>-->
+<!--</div>-->
+<!--<script>-->
+<!--    document.getElementById('streamer-video-preview').addEventListener("mousemove",function (event) {-->
+<!--        document.getElementById("stop-broadcast").style.display = "block";-->
+<!--    });-->
+<!--    document.getElementById('streamer-video-preview').addEventListener("ontouchstart",function (event) {-->
+<!--        document.getElementById("stop-broadcast").style.display = "none";-->
+<!--    });-->
+<!--</script>-->
+<script src="/public/js/RTCMultiConnection.min.js"></script>
+<script src="/node_modules/webrtc-adapter/out/adapter.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/streamer.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
