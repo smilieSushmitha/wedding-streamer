@@ -162,14 +162,14 @@ connection.onstream = function(event) {
 
 document.getElementById('switch-camera-button').onclick = function() {
     if(userOrApplication == 'user'){
-        userOrApplication = 'application';
+        userOrApplication = 'environment';
         console.log(userOrApplication);
     }else{
         userOrApplication = 'user';
         console.log(userOrApplication);
     }
 
-    connection.mediaConstraints = {
+    connection.session = {
         audio: true,
         video: {
             mandatory: {},
@@ -180,7 +180,7 @@ document.getElementById('switch-camera-button').onclick = function() {
     };
 
     if (DetectRTC.browser.name === 'Firefox') {
-        connection.mediaConstraints = {
+        connection.session = {
             audio: true,
             video: {
                 facingMode: userOrApplication
