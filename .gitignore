@@ -36,3 +36,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# ngrok
+ngrok
+ngrok-stable-darwin-amd64.zip

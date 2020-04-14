@@ -160,18 +160,9 @@ connection.onstream = function(event) {
     localStorage.setItem(connection.socketMessageEvent, connection.sessionid);
 };
 
-document.getElementById('switch-camera-button').onclick = function() {
-    if(userOrApplication == 'user'){
-        userOrApplication = 'application';
-        console.log(userOrApplication);
-    }else{
-        userOrApplication = 'user';
-        console.log(userOrApplication);
-    }
 
-    connection.mediaConstraints.video.optional = [{
-        facingMode: userOrApplication
-    }];
+document.getElementById('mute-button').onclick = function() {
+    connection.streamEvents.selectFirst().stream.mute('audio');
 };
 
 // ask node.js server to look for a broadcast
@@ -180,7 +171,7 @@ document.getElementById('switch-camera-button').onclick = function() {
 document.getElementById('open-broadcast').onclick = function() {
     document.getElementById("streamer-video-div").style.display = "block";
     document.getElementById("open-broadcast").style.display = "none";
-
+    var broadcastId = 'arif';
     connection.extra.broadcastId = 'arif';
 
     connection.session = {

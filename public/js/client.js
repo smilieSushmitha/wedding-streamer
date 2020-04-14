@@ -168,7 +168,7 @@ connection.onstream = function(event) {
 // if broadcast is available, simply join it. i.e. "join-broadcaster" event should be emitted.
 // if broadcast is absent, simply create it. i.e. "start-broadcasting" event should be fired.
 document.getElementById('watch').onclick = function() {
-
+    var broadcastId ='arif';
     connection.extra.broadcastId = 'arif';
     connection.session = {
         audio: true,
