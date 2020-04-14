@@ -3,7 +3,7 @@
 var enableRecordings = false;
 
 var connection = new RTCMultiConnection();
-
+var userOrApplication = "user";
 // https://www.rtcmulticonnection.org/docs/iceServers/
 // use your own TURN-server here!
 connection.iceServers = [{
@@ -158,6 +158,35 @@ connection.onstream = function(event) {
 
     // to keep room-id in cache
     localStorage.setItem(connection.socketMessageEvent, connection.sessionid);
+};
+
+document.getElementById('switch-camera-button').onclick = function() {
+    if(userOrApplication == 'user'){
+        userOrApplication = 'application';
+        console.log(userOrApplication);
+    }else{
+        userOrApplication = 'user';
+        console.log(userOrApplication);
+    }
+
+    connection.mediaConstraints = {
+        audio: true,
+        video: {
+            mandatory: {},
+            optional: [{
+                facingMode: userOrApplication
+            }]
+        }
+    };
+
+    if (DetectRTC.browser.name === 'Firefox') {
+        connection.mediaConstraints = {
+            audio: true,
+            video: {
+                facingMode: userOrApplication
+            }
+        };
+    }
 };
 
 // ask node.js server to look for a broadcast
