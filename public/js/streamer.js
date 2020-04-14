@@ -169,24 +169,9 @@ document.getElementById('switch-camera-button').onclick = function() {
         console.log(userOrApplication);
     }
 
-    connection.session = {
-        audio: true,
-        video: {
-            mandatory: {},
-            optional: [{
-                facingMode: userOrApplication
-            }]
-        }
-    };
-
-    if (DetectRTC.browser.name === 'Firefox') {
-        connection.session = {
-            audio: true,
-            video: {
-                facingMode: userOrApplication
-            }
-        };
-    }
+    connection.mediaConstraints.video.optional = [{
+        facingMode: userOrApplication
+    }];
 };
 
 // ask node.js server to look for a broadcast
