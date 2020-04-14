@@ -162,7 +162,7 @@ connection.onstream = function(event) {
 
 document.getElementById('switch-camera-button').onclick = function() {
     if(userOrApplication == 'user'){
-        userOrApplication = 'environment';
+        userOrApplication = 'application';
         console.log(userOrApplication);
     }else{
         userOrApplication = 'user';
