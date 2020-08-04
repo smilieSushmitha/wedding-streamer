@@ -1,7 +1,7 @@
 // recording is disabled because it is resulting for browser-crash
 // if you enable below line, please also uncomment above "RecordRTC.js"
 var enableRecordings = false;
-
+var ismute = false;
 var connection = new RTCMultiConnection();
 
 // https://www.rtcmulticonnection.org/docs/iceServers/
@@ -14,7 +14,8 @@ connection.iceServers = [{
         'stun:stun.l.google.com:19302?transport=udp',
     ]
 }];
-
+document.getElementById("client-video-div").style.display = "none";
+document.getElementById("watch").style.display = "block";
 // its mandatory in v3
 connection.enableScalableBroadcast = true;
 
@@ -48,6 +49,9 @@ connection.connectSocket(function(socket) {
         };
         connection.broadcastId = hintsToJoinBroadcast.broadcastId;
         connection.join(hintsToJoinBroadcast.userid);
+        console.log('before mute');
+
+        // openFullscreen();
     });
 
     socket.on('rejoin-broadcast', function(broadcastId) {
@@ -70,7 +74,9 @@ connection.connectSocket(function(socket) {
     socket.on('broadcast-stopped', function(broadcastId) {
         // alert('Broadcast has been stopped.');
         // location.reload();
-        console.error('broadcast-stopped', broadcastId);
+        document.getElementById("client-video-div").style.display = "none";
+        document.getElementById("watch").style.display = "block";
+        // console.error('broadcast-stopped', broadcastId);
         alert('This broadcast has been stopped.');
     });
 
@@ -103,7 +109,6 @@ connection.onstream = function(event) {
     connection.isUpperUserLeft = false;
     videoPreview.srcObject = event.stream;
     videoPreview.play();
-
     videoPreview.userid = event.userid;
 
     if (event.type === 'local') {
@@ -178,13 +183,13 @@ document.getElementById('watch').onclick = function() {
 
     connection.getSocket(function(socket) {
         socket.emit('check-broadcast-presence', broadcastId, function(isBroadcastExists) {
-            console.log('check-broadcast-presence', broadcastId, isBroadcastExists);
+            // console.log('check-broadcast-presence', broadcastId, isBroadcastExists);
             if (!isBroadcastExists) {
                 // the first person (i.e. real-broadcaster) MUST set his user-id
                 alert('Broadcast not yet started');
             }
             else {
-                document.getElementById("client-video-preview").style.display = "block";
+                document.getElementById("client-video-div").style.display = "block";
                 document.getElementById("watch").style.display = "none";
                 socket.emit('join-broadcast', {
                     broadcastId: broadcastId,
@@ -288,3 +293,30 @@ connection.onNumberOfBroadcastViewersUpdated = function(event) {
 
     document.getElementById('broadcast-viewers-counter').innerHTML = 'Number of broadcast viewers: <b>' + event.numberOfBroadcastViewers + '</b>';
 };
+
+document.getElementById('mute-button').onclick = function() {
+    console.log(ismute)
+    if(ismute){
+        if (connection.streamEvents.selectFirst().userid === broadcastId) {
+            connection.streamEvents.selectFirst().stream.unmute('audio');
+            ismute = false;
+        }
+    } else {
+        if (connection.streamEvents.selectFirst().userid === broadcastId) {
+            connection.streamEvents.selectFirst().stream.mute('audio');
+            ismute = true;
+        }
+    }
+};
+
+function openFullscreen() {
+    if (videoPreview.requestFullscreen) {
+        videoPreview.requestFullscreen();
+    } else if (videoPreview.mozRequestFullScreen) { /* Firefox */
+        videoPreview.mozRequestFullScreen();
+    } else if (videoPreview.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        videoPreview.webkitRequestFullscreen();
+    } else if (videoPreview.msRequestFullscreen) { /* IE/Edge */
+        videoPreview.msRequestFullscreen();
+    }
+}

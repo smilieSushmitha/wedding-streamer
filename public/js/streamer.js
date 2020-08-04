@@ -1,9 +1,9 @@
 // recording is disabled because it is resulting for browser-crash
 // if you enable below line, please also uncomment above "RecordRTC.js"
 var enableRecordings = false;
-
 var connection = new RTCMultiConnection();
-var userOrApplication = "user";
+var ismute = false;
+var isVideoVisibe = true;
 // https://www.rtcmulticonnection.org/docs/iceServers/
 // use your own TURN-server here!
 connection.iceServers = [{
@@ -14,6 +14,9 @@ connection.iceServers = [{
         'stun:stun.l.google.com:19302?transport=udp',
     ]
 }];
+
+document.getElementById("streamer-video-div").style.display = "none";
+document.getElementById("open-broadcast").style.display = "block";
 
 // its mandatory in v3
 connection.enableScalableBroadcast = true;
@@ -70,6 +73,11 @@ connection.connectSocket(function(socket) {
     socket.on('broadcast-stopped', function(broadcastId) {
         console.error('broadcast-stopped', broadcastId);
         alert('This broadcast has been stopped.');
+
+
+        document.getElementById("streamer-video-div").style.display = "none";
+        document.getElementById("open-broadcast").style.display = "block";
+
     });
 
     // this event is emitted when a broadcast is absent.
@@ -162,15 +170,38 @@ connection.onstream = function(event) {
 
 
 document.getElementById('mute-button').onclick = function() {
-    connection.streamEvents.selectFirst().stream.mute('audio');
+    if(ismute){
+        if (connection.streamEvents.selectFirst().userid === broadcastId) {
+            connection.streamEvents.selectFirst().stream.unmute('audio');
+            ismute = false;
+        }
+    } else {
+        if (connection.streamEvents.selectFirst().userid === broadcastId) {
+            connection.streamEvents.selectFirst().stream.mute('audio');
+            ismute = true;
+        }
+    }
 };
+
+document.getElementById('stop-video').onclick =function(){
+    if(isVideoVisibe){
+        if (connection.streamEvents.selectFirst().userid === broadcastId) {
+            connection.streamEvents.selectFirst().stream.mute('video');
+            isVideoVisibe = false;
+        }
+    } else {
+        if (connection.streamEvents.selectFirst().userid === broadcastId) {
+            connection.streamEvents.selectFirst().stream.unmute();
+            isVideoVisibe = true;
+        }
+    }
+};
+
 
 // ask node.js server to look for a broadcast
 // if broadcast is available, simply join it. i.e. "join-broadcaster" event should be emitted.
 // if broadcast is absent, simply create it. i.e. "start-broadcasting" event should be fired.
 document.getElementById('open-broadcast').onclick = function() {
-    document.getElementById("streamer-video-div").style.display = "block";
-    document.getElementById("open-broadcast").style.display = "none";
     var broadcastId = 'arif';
     connection.extra.broadcastId = 'arif';
 
@@ -184,6 +215,9 @@ document.getElementById('open-broadcast').onclick = function() {
         socket.emit('check-broadcast-presence', broadcastId, function(isBroadcastExists) {
             if (!isBroadcastExists) {
                 // the first person (i.e. real-broadcaster) MUST set his user-id
+
+                document.getElementById("streamer-video-div").style.display = "block";
+                document.getElementById("open-broadcast").style.display = "none";
                 connection.userid = broadcastId;
                 socket.emit('join-broadcast', {
                     broadcastId: broadcastId,
@@ -289,3 +323,22 @@ connection.onNumberOfBroadcastViewersUpdated = function(event) {
 
     document.getElementById('broadcast-viewers-counter').innerHTML = 'Number of broadcast viewers: <b>' + event.numberOfBroadcastViewers + '</b>';
 };
+
+
+function openFullscreen() {
+    if (videoPreview.requestFullscreen) {
+        videoPreview.requestFullscreen();
+    } else if (videoPreview.mozRequestFullScreen) { /* Firefox */
+        videoPreview.mozRequestFullScreen();
+    } else if (videoPreview.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        videoPreview.webkitRequestFullscreen();
+    } else if (videoPreview.msRequestFullscreen) { /* IE/Edge */
+        videoPreview.msRequestFullscreen();
+    }
+}
+
+function ext() {
+    console.log('ext');
+    window.open('', '_self', '');
+    window.close();
+}

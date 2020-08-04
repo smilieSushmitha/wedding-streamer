@@ -2,13 +2,6 @@
 <html>
 <head>
     <style>
-        .content {
-            position: fixed;
-            bottom: 0;
-            color: #f1f1f1;
-            width: 100%;
-            padding: 20px;
-        }
         .wrapper {
             text-align: center;
         }
@@ -34,31 +27,32 @@
             left: 40%;
             display: none;
         }
-        video{
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
+        .video {
+            display: block;
+            width: auto;
+            margin: 0 auto;
         }
-        #streamer-video-div{
-            display: none;
-        }
+
     </style>
 </head>
 <body>
 <div class="wrapper">
-    <button id="open-broadcast">OPEN BROADCAST</button>
-</div>
-<div id="streamer-video-div" >
-<video id="streamer-video-preview" autoplay></video>
-    <div class="content">
-        <button id="mute-button">mute</button>
-        <button id=""></button>
-        <div id="media-devices-info"></div>
+    <div>
+        <button id="open-broadcast">OPEN BROADCAST</button>
     </div>
 
+    <div id="streamer-video-div" >
+        <button id="mute-button">Mute</button>
+        <button id="stop-video">Stop/Start video</button>
+        <button id="full-screen" onclick="openFullscreen()">Full screen</button>
+<!--        <button id="end-streaming" onclick="ext()">Exit</button>-->
+        <br/> <br/>
+        <div id="media-devices-info"></div>
+        <video id="streamer-video-preview" autoplay muted controls></video>
+    </div>
 </div>
+
+
 
 <!--<div class="content">-->
 <!--    <button id="stop-broadcast"><img id = "stop-broadcast-image" src="assets/endCall.png"/></button>-->
@@ -80,4 +74,5 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
 </html>

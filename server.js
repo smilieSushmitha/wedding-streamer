@@ -156,7 +156,7 @@ function serverHandler(request, response) {
         filename.search(/public/g) === -1 &&
         filename.search(/admin/g) === -1 &&
         stats.isDirectory() &&
-        config.homePage === "/public/index.html"
+        config.homePage === "/public/client.html"
       ) {
         if (response.redirect) {
           response.redirect("/public/");
@@ -182,11 +182,11 @@ function serverHandler(request, response) {
         response.writeHead(404, {
           "Content-Type": "text/html",
         });
-
+        
         if (filename.indexOf(resolveURL("/public")) !== -1) {
           filename = filename.replace(resolveURL("/public/"), "");
           filename = filename.replace(resolveURL("/public"), "");
-          filename += resolveURL("/public/index.html");
+          filename += resolveURL("/public/client.html");
         } else {
           filename += resolveURL(config.homePage);
         }
